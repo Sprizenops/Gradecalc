@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GradeCalc – GPA, SGPA & CGPA Calculator for Indian Students</title>
+<meta name="description" content="Free SGPA, CGPA, target CGPA, percentage and attendance calculators for Indian college students. Runs in your browser; nothing is sent to a server.">
+<meta name="theme-color" content="#4f46e5">
+<style>
+:root{--bg:#f5f6fb;--cd:#fff;--tx:#14172b;--mu:#565b77;--ac:#4f46e5;--oa:#fff;--bd:#dfe2ef;--so:#eceeff;--bad:#a4210f;--bb:#fdeeea;--sh:0 1px 2px rgba(20,23,43,.05),0 10px 28px rgba(20,23,43,.07);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1120;--cd:#171b2f;--tx:#eceefb;--mu:#a5aac6;--ac:#9a9bff;--oa:#0e1120;--bd:#2a2f4a;--so:#22274a;--bad:#ffb4a6;--bb:#3a1a17;--sh:none}}
+:root[data-theme="dark"]{--bg:#0e1120;--cd:#171b2f;--tx:#eceefb;--mu:#a5aac6;--ac:#9a9bff;--oa:#0e1120;--bd:#2a2f4a;--so:#22274a;--bad:#ffb4a6;--bb:#3a1a17;--sh:none}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--ac)}h1,h2,h3{line-height:1.2;margin:0 0 .5em}h1{font-size:clamp(1.8rem,6vw,2.6rem)}h2{font-size:1.25rem}h3{font-size:1.1rem}p{margin:0 0 .8em}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+.skip{position:absolute;left:-999px}.skip:focus{left:8px;top:8px;background:var(--cd);padding:8px;z-index:9}
+header.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--cd);border-bottom:1px solid var(--bd)}
+.bar{display:flex;align-items:center;gap:8px;height:60px}
+.logo{font-weight:800;font-size:1.3rem;color:var(--tx);text-decoration:none;margin-right:auto}.logo span{color:var(--ac)}
+nav{position:absolute;left:0;right:0;top:60px;background:var(--cd);border-bottom:1px solid var(--bd);display:none;padding:6px 16px 12px}
+nav.open{display:block}nav ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+nav a{display:block;padding:12px;border-radius:10px;color:var(--mu);text-decoration:none;font-weight:600}
+nav a:hover,nav a[aria-current]{background:var(--so);color:var(--ac)}
+.ib{width:44px;height:44px;border-radius:12px;border:1px solid var(--bd);background:transparent;color:var(--tx);font-size:1.2rem;cursor:pointer}
+@media(min-width:920px){#menu{display:none}nav{position:static;display:block;border:0;padding:0;background:none}nav ul{flex-direction:row;gap:2px}nav a{padding:8px 10px;font-size:.95rem}}
+main{min-height:70vh;outline:0;padding-bottom:40px}.page{animation:in .2s ease}@keyframes in{from{opacity:0;transform:translateY(6px)}}
+.hero{padding:36px 0 22px}.hero h1 span{color:var(--ac)}.lead{font-size:1.2rem;font-weight:600;margin-bottom:.3em}.sub{color:var(--mu)}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}.g2{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.card{background:var(--cd);border:1px solid var(--bd);border-radius:20px;padding:18px;box-shadow:var(--sh);margin-bottom:14px}.grid .card{margin:0;display:flex;flex-direction:column;align-items:flex-start}.grid .card p{color:var(--mu);flex:1}
+.em{font-size:1.6rem;width:48px;height:48px;border-radius:14px;background:var(--so);display:grid;place-items:center;margin-bottom:10px}
+.sec{margin-top:34px}.formula{font-family:ui-monospace,Menlo,monospace;background:var(--so);padding:8px 10px;border-radius:10px;font-size:.9rem;display:block}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 18px;border-radius:12px;border:1px solid transparent;background:var(--ac);color:var(--oa);font:600 1rem inherit;cursor:pointer;text-decoration:none}
+.btn.s{background:var(--so);color:var(--ac)}.btn.g{background:transparent;border-color:var(--bd);color:var(--tx)}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+label{display:block;font-size:.82rem;font-weight:600;color:var(--mu)}
+input,select,textarea{display:block;width:100%;min-height:46px;margin-top:4px;padding:10px 12px;border-radius:12px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font:400 16px/1.3 inherit}textarea{min-height:130px;font-family:ui-monospace,Menlo,monospace}
+output{display:flex;align-items:center;min-height:46px;margin-top:4px;font-weight:700;font-size:1.05rem;color:var(--tx)}
+.row{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:8px;align-items:end;padding:12px 0;border-top:1px solid var(--bd)}.row .nm{grid-column:1/-1}
+.c3{grid-template-columns:1fr 1fr 1fr auto!important}.srow{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:end;padding:8px 0}
+@media(min-width:700px){.row{grid-template-columns:2fr 1fr 1fr 1fr auto}.row .nm{grid-column:auto}}
+.ico{width:46px;height:46px;border-radius:12px;border:1px solid var(--bd);background:transparent;color:var(--mu);cursor:pointer}
+details.sc{margin:0}summary{cursor:pointer;font-weight:600;padding:4px 0}.uni summary{font-size:1.1rem}
+.hint,.note{color:var(--mu);font-size:.92rem}.note{background:var(--so);padding:12px 14px;border-radius:12px}
+.err{background:var(--bb);color:var(--bad);border-radius:12px;padding:12px 14px}.err ul{margin:6px 0 0;padding-left:20px}
+.out{margin-top:14px}.result{text-align:center;border:1px solid var(--bd);background:linear-gradient(135deg,var(--so),var(--cd));border-radius:20px;padding:22px 16px}
+.lb{color:var(--mu);font-weight:600;margin:0}.v{display:block;font-size:clamp(2.6rem,12vw,3.8rem);font-weight:800;color:var(--ac);line-height:1.15}
+.meta{list-style:none;padding:0;margin:8px 0;font-weight:600}.result details{text-align:left;margin-top:8px}.result .btns{justify-content:center}
+footer{border-top:1px solid var(--bd);background:var(--cd);padding:26px 0 30px;color:var(--mu);font-size:.92rem}footer ul{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:6px 18px}footer strong{color:var(--tx);font-size:1.1rem}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:10px 16px;border-radius:12px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:9}#toast.show{opacity:1}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main" onclick="event.preventDefault();document.getElementById('main').focus()">Skip to content</a>
+<header class="nav"><div class="wrap bar">
+<a class="logo" href="#/" aria-label="GradeCalc home">Grade<span>Calc</span></a>
+<nav aria-label="Main"><ul>
+<li><a href="#/sgpa-calculator">SGPA</a></li><li><a href="#/cgpa-calculator">CGPA</a></li><li><a href="#/target-cgpa">Target CGPA</a></li><li><a href="#/percentage-calculator">Percentage</a></li><li><a href="#/attendance-calculator">Attendance</a></li><li><a href="#/universities">Universities</a></li>
+</ul></nav>
+<button class="ib" id="theme" type="button" aria-label="Toggle dark mode">🌙</button>
+<button class="ib" id="menu" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav">☰</button>
+</div></header>
+<main id="main" tabindex="-1"></main>
+<footer><div class="wrap">
+<strong>GradeCalc</strong><p>Simple academic calculators for students.</p>
+<ul><li><a href="#/">Home</a></li><li><a href="#/sgpa-calculator">SGPA Calculator</a></li><li><a href="#/cgpa-calculator">CGPA Calculator</a></li><li><a href="#/attendance-calculator">Attendance Calculator</a></li><li><a href="#/privacy">Privacy</a></li><li><a href="#/about">About</a></li></ul>
+<p>Calculations are provided for educational purposes. University grading systems may differ, so always verify official academic regulations.</p>
+</div></footer>
+<div id="toast" role="status"></div>
+<script>
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const num=v=>{v=String(v).trim().replace(',','.');return v===''?NaN:Number(v)},ok=Number.isFinite,f2=x=>x.toFixed(2),r2=x=>String(+x.toFixed(2));
+const cl=a=>a.map(r=>[...r]);
+const PRE={ten:[['O',10],['A+',9],['A',8],['B+',7],['B',6],['C',5],['P',4],['F',0]],four:[['A',4],['B',3],['C',2],['D',1],['F',0]]};
+/* To add a university: push an object here. Put its OFFICIAL grade table in `scale` as [grade, points] pairs. */
+const UNIS=[{slug:'gauhati-university',key:'gu',name:'Gauhati University (GU)',short:'GU',title:'Gauhati University SGPA Calculator',desc:'Calculate SGPA for Gauhati University with a grading scale you configure from the official regulations, then combine semesters into a CGPA.',scale:[],
+note:'Grading rules differ by course and regulation, so this page does not assume any. Enter the grades and grade points from the official Gauhati University regulations for your programme in the grading scale, then add your subjects.'}];
+const S={generic:cl(PRE.ten)};UNIS.forEach(u=>S[u.key]=cl(u.scale));
+
+function show(el,o){
+ if(o.info){el.innerHTML=`<div class="note">${esc(o.info)}</div>`;return}
+ if(o.errs&&o.errs.length){el.innerHTML=`<div class="err" role="alert"><strong>${esc(o.et||'Please fix:')}</strong><ul>${o.errs.map(e=>`<li>${esc(e)}</li>`).join('')}</ul></div>`;return}
+ const li=a=>a.map(l=>`<li>${esc(l)}</li>`).join('');
+ el.innerHTML=`<div class="result"><p class="lb">${esc(o.label)}</p><span class="v">${esc(o.value)}</span>${o.msg?`<p>${esc(o.msg)}</p>`:''}${o.lines?`<ul class="meta">${li(o.lines)}</ul>`:''}${o.bd?`<details><summary>Calculation breakdown</summary><ul>${li(o.bd)}</ul></details>`:''}<div class="btns"><button class="btn" data-copy="${esc(o.copy)}">Copy Result</button><button class="btn g" data-reset>Reset</button></div></div>`}
+
+function sgpaW(root,key,rows){
+ const sc=S[key],gu=key!=='generic';
+ const valid=()=>sc.filter(([l,p])=>String(l).trim()&&ok(num(p))).map(([l,p])=>[String(l).trim(),p]);
+ const gp=g=>{const e=valid().find(([l])=>l===g);return e?num(e[1]):undefined};
+ root.innerHTML=`<div class="card"><details class="sc"${gu?' open':''}><summary>Grading scale – view or edit</summary>${gu?'':`<label>Preset<select data-pre><option value="ten">Example 10-point (O, A+, A…)</option><option value="four">Example 4-point (A–F)</option></select></label>`}<p class="hint">Edit grades and points to match your university's official table.</p><div class="srows"></div><button class="btn s" data-sadd>+ Add grade</button></details></div>
+ <div class="card"><h2>Subjects</h2>${gu?'':'<p class="hint">Example values are pre-filled – replace them with your own.</p>'}<div class="rows"></div><div class="btns"><button class="btn s" data-add>+ Add subject</button><button class="btn" data-calc>Calculate</button></div><div class="out" aria-live="polite"></div></div>`;
+ const dS=()=>{$('.srows',root).innerHTML=sc.map((r,i)=>`<div class="srow"><label>Grade<input data-s="0" data-i="${i}" value="${esc(r[0])}" autocomplete="off"></label><label>Grade point<input data-s="1" data-i="${i}" inputmode="decimal" value="${esc(r[1])}"></label><button class="ico" data-sdel="${i}" aria-label="Remove grade">✕</button></div>`).join('')};
+ const dR=()=>{const v=valid();rows.forEach(r=>{if(gp(r.g)===undefined)r.g=v.length?v[0][0]:''});
+  $('.rows',root).innerHTML=rows.map((r,i)=>`<div class="row" data-i="${i}"><label class="nm">Subject name<input data-f="n" value="${esc(r.n)}" placeholder="e.g. Physics" autocomplete="off"></label><label>Credits<input data-f="c" inputmode="decimal" value="${esc(r.c)}"></label><label>Grade<select data-f="g">${v.map(([l])=>`<option${l===r.g?' selected':''}>${esc(l)}</option>`).join('')}</select></label><label>Grade point<output>${gp(r.g)??'–'}</output></label><button class="ico" data-del="${i}" aria-label="Remove subject ${i+1}">✕</button></div>`).join('')};
+ const calc=()=>{const out=$('.out',root);
+  if(!valid().length)return show(out,{info:"Add your university's grades and grade points in the grading scale above. Your SGPA will appear here."});
+  const errs=[],bd=[];let tc=0,tp=0;
+  rows.forEach((r,i)=>{const nm=r.n.trim()||`Subject ${i+1}`,c=num(r.c),p=gp(r.g);
+   if(!ok(c)||c<=0)errs.push(`${nm}: enter credits greater than 0.`);
+   else if(p===undefined)errs.push(`${nm}: choose a valid grade.`);
+   else{tc+=c;tp+=c*p;bd.push(`${nm}: ${r2(c)} credits × ${r2(p)} = ${r2(c*p)}`)}});
+  if(!rows.length)errs.push('Add at least one subject.');
+  if(errs.length||!(tc>0))return show(out,{errs});
+  const s=tp/tc;
+  show(out,{label:'Your SGPA',value:f2(s),lines:[`Total Credits: ${r2(tc)}`,`Total Grade Points: ${r2(tp)}`],bd:[...bd,`SGPA = ${r2(tp)} ÷ ${r2(tc)} = ${f2(s)}`],copy:`SGPA: ${f2(s)} (total credits ${r2(tc)}, total grade points ${r2(tp)}) – GradeCalc`})};
+ root.addEventListener('input',e=>{const t=e.target,d=t.dataset;
+  if(d.s!==undefined){sc[+d.i][+d.s]=t.value;dR();calc()}
+  else if(d.f){const row=t.closest('.row');rows[+row.dataset.i][d.f]=t.value;if(d.f==='g')$('output',row).textContent=gp(t.value)??'–';calc()}});
+ root.addEventListener('change',e=>{if(e.target.dataset.pre!==undefined){sc.splice(0,sc.length,...cl(PRE[e.target.value]));dS();dR();calc()}});
+ root.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const d=b.dataset;
+  if('add'in d){rows.push({n:'',c:'3',g:''});dR();calc()}
+  else if(d.del!==undefined){rows.splice(+d.del,1);dR();calc()}
+  else if('sadd'in d){sc.push(['','']);dS()}
+  else if(d.sdel!==undefined){sc.splice(+d.sdel,1);dS();dR();calc()}
+  else if('calc'in d)calc()});
+ dS();dR();calc()}
+
+function cgpaW(root){
+ const rows=[{s:'1',g:'8.10',c:'22'},{s:'2',g:'8.40',c:'24'},{s:'3',g:'7.90',c:'20'}];
+ root.innerHTML=`<div class="card"><label>Maximum grade point on your scale<input name="mx" inputmode="decimal" value="10"></label><h2 style="margin-top:16px">Semesters</h2><p class="hint">Example values are pre-filled – replace them with your own.</p><div class="rows"></div><div class="btns"><button class="btn s" data-add>+ Add semester</button><button class="btn" data-calc>Calculate</button></div><div class="out" aria-live="polite"></div></div>`;
+ const dR=()=>{$('.rows',root).innerHTML=rows.map((r,i)=>`<div class="row c3" data-i="${i}"><label>Semester<input data-f="s" inputmode="numeric" value="${esc(r.s)}"></label><label>SGPA<input data-f="g" inputmode="decimal" value="${esc(r.g)}"></label><label>Total credits<input data-f="c" inputmode="decimal" value="${esc(r.c)}"></label><button class="ico" data-del="${i}" aria-label="Remove semester ${i+1}">✕</button></div>`).join('')};
+ const calc=()=>{const out=$('.out',root),mx=num($('[name=mx]',root).value),errs=[],bd=[];let tc=0,tw=0;
+  if(!ok(mx)||mx<=0)errs.push('Maximum grade point must be greater than 0.');
+  rows.forEach((r,i)=>{const nm=`Semester ${r.s.trim()||i+1}`,s=num(r.g),c=num(r.c);
+   if(!ok(s)||s<0||(ok(mx)&&s>mx))errs.push(`${nm}: SGPA must be a number between 0 and ${ok(mx)&&mx>0?mx:'the maximum'}.`);
+   else if(!ok(c)||c<=0)errs.push(`${nm}: enter credits greater than 0.`);
+   else{tc+=c;tw+=s*c;bd.push(`${nm}: ${f2(s)} × ${r2(c)} = ${f2(s*c)}`)}});
+  if(!rows.length)errs.push('Add at least one semester.');
+  if(errs.length||!(tc>0))return show(out,{errs});
+  const g=tw/tc;
+  show(out,{label:'Your CGPA',value:f2(g),lines:[`Total Completed Credits: ${r2(tc)}`,`Semesters counted: ${rows.length}`],bd:[...bd,`CGPA = ${f2(tw)} ÷ ${r2(tc)} = ${f2(g)}`],copy:`CGPA: ${f2(g)} (total credits ${r2(tc)}) – GradeCalc`})};
+ root.addEventListener('input',e=>{const t=e.target,row=t.closest('.row');if(row&&t.dataset.f)rows[+row.dataset.i][t.dataset.f]=t.value;calc()});
+ root.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const d=b.dataset;
+  if('add'in d){rows.push({s:String(rows.length+1),g:'',c:''});dR();calc()}
+  else if(d.del!==undefined){rows.splice(+d.del,1);dR();calc()}
+  else if('calc'in d)calc()});
+ dR();calc()}
+
+function tools(root,m){
+ const run=el=>show($('.out',el),m[el.dataset.tool](n=>$(`[name=${n}]`,el).value));
+ root.addEventListener('input',e=>{const el=e.target.closest('[data-tool]');el&&run(el)});
+ root.addEventListener('click',e=>{const b=e.target.closest('[data-calc]');b&&run(b.closest('[data-tool]'))});
+ $$('[data-tool]',root).forEach(run)}
+const F=(l,n,v)=>`<label>${l}<input name="${n}" inputmode="decimal" value="${v}" autocomplete="off"></label>`;
+const CB='<div class="btns"><button class="btn" data-calc>Calculate</button></div><div class="out" aria-live="polite"></div>';
+const EX='<p class="hint">Example values are pre-filled – replace them with your own.</p>';
+
+const T={
+tg:g=>{const c=num(g('cur')),d=num(g('done')),Tt=num(g('tot')),t=num(g('tgt')),m=num(g('mx')),e=[];
+ if(!ok(m)||m<=0)e.push('Maximum grade point must be greater than 0.');
+ const mm=ok(m)&&m>0?m:10;
+ if(!ok(c)||c<0||c>mm)e.push(`Current CGPA must be between 0 and ${mm}.`);
+ if(!ok(d)||d<0)e.push('Credits completed must be 0 or more.');
+ if(!ok(Tt)||Tt<=0)e.push('Total credits required must be greater than 0.');
+ else if(ok(d)&&d>=Tt)e.push('Completed credits must be less than the total required – otherwise your CGPA is already final.');
+ if(!ok(t)||t<=0||t>mm)e.push(`Target CGPA must be above 0 and at most ${mm}.`);
+ if(e.length)return{errs:e};
+ const rem=Tt-d,req=(t*Tt-c*d)/rem,best=(c*d+mm*rem)/Tt,low=c*d/Tt;
+ if(req>mm+1e-9)return{et:'Target not reachable',errs:[`Even a perfect ${r2(mm)} SGPA on all remaining ${r2(rem)} credits would only lift your CGPA to ${f2(best)}, which is below your target of ${f2(t)}. Try a lower target.`]};
+ const lines=[`Remaining credits: ${r2(rem)}`,`Best possible final CGPA: ${f2(best)}`,`Lowest possible final CGPA: ${f2(low)}`];
+ if(req<=0)return{label:'Required average SGPA',value:'Any',msg:`You have already secured this target: even an SGPA of 0 on the remaining credits keeps your CGPA at ${f2(low)} or above.`,lines,copy:`Target CGPA ${f2(t)} is already secured – GradeCalc`};
+ return{label:'Required average SGPA',value:f2(req),msg:`To finish with a CGPA of ${f2(t)}, you need an average SGPA of ${f2(req)} across your remaining ${r2(rem)} credits.`,lines,bd:[`Points needed overall: ${r2(t)} × ${r2(Tt)} = ${r2(t*Tt)}`,`Points already earned: ${r2(c)} × ${r2(d)} = ${r2(c*d)}`,`Points still needed: ${r2(t*Tt-c*d)} ÷ ${r2(rem)} credits = ${f2(req)}`],copy:`To reach CGPA ${f2(t)} I need an average SGPA of ${f2(req)} over ${r2(rem)} remaining credits – GradeCalc`}},
+t1:g=>{const o=num(g('o')),Tt=num(g('t')),e=[];
+ if(!ok(Tt)||Tt<=0)e.push('Total marks must be greater than 0.');
+ if(!ok(o)||o<0)e.push('Marks obtained must be 0 or more.');
+ else if(ok(Tt)&&o>Tt)e.push('Marks obtained cannot exceed total marks.');
+ if(e.length)return{errs:e};const p=o/Tt*100;
+ return{label:'Your percentage',value:f2(p)+'%',bd:[`(${r2(o)} ÷ ${r2(Tt)}) × 100 = ${f2(p)}%`],copy:`${r2(o)}/${r2(Tt)} = ${f2(p)}% – GradeCalc`}},
+t2:g=>{const Tt=num(g('t')),p=num(g('p')),e=[];
+ if(!ok(Tt)||Tt<=0)e.push('Total marks must be greater than 0.');
+ if(!ok(p)||p<0||p>100)e.push('Desired percentage must be between 0 and 100.');
+ if(e.length)return{errs:e};const m=p/100*Tt;
+ return{label:'Marks required',value:`${r2(m)} / ${r2(Tt)}`,msg:`If marks are whole numbers, aim for at least ${Math.ceil(m-1e-9)}.`,bd:[`${r2(p)}% of ${r2(Tt)} = ${r2(m)}`],copy:`${r2(p)}% of ${r2(Tt)} needs ${r2(m)} marks – GradeCalc`}},
+t3:g=>{const p=num(g('p')),e=[],b=[];
+ if(!ok(p)||p<0||p>100)e.push('Enter a percentage between 0 and 100.');
+ g('bands').split('\n').forEach((ln,i)=>{ln=ln.trim();if(!ln)return;const m=ln.match(/^(\d+(?:\.\d+)?)\s*%?\s*[:,\-]?\s*(\S.*)$/);m?b.push([+m[1],m[2].trim()]):e.push(`Band line ${i+1} should look like "80 A+" (minimum % then grade).`)});
+ if(!b.length)e.push('Add at least one grade band.');
+ if(e.length)return{errs:e};
+ const hit=b.filter(x=>x[0]<=p).sort((x,y)=>y[0]-x[0])[0];
+ if(!hit)return{errs:[`No band covers ${r2(p)}%. Add a band starting at 0.`]};
+ return{label:'Grade',value:hit[1],msg:`${r2(p)}% falls in the band starting at ${r2(hit[0])}%.`,copy:`${r2(p)}% = grade ${hit[1]} – GradeCalc`}},
+at:g=>{const a=num(g('a')),t=num(g('t')),r=num(g('r')),e=[];
+ if(!Number.isInteger(a)||a<0)e.push('Classes attended must be a whole number (0 or more).');
+ if(!Number.isInteger(t)||t<=0)e.push('Total classes conducted must be a whole number above 0.');
+ if(Number.isInteger(a)&&Number.isInteger(t)&&a>t)e.push('Classes attended cannot be more than total classes conducted.');
+ if(!ok(r)||r<=0||r>100)e.push('Required attendance must be between 1% and 100%.');
+ if(e.length)return{errs:e};
+ const cur=a/t*100,meets=cur>=r-1e-9;
+ const miss=meets?Math.max(0,Math.floor(a*100/r-t+1e-9)):0;
+ const need=meets?0:r>=100?null:Math.ceil((r*t-100*a)/(100-r)-1e-9);
+ const bd=[`Attended ${a} of ${t} classes = ${f2(cur)}%`];
+ if(meets)bd.push(`Classes you can miss: floor(${a} × 100 ÷ ${r2(r)} − ${t}) = ${miss}`);else if(need!==null)bd.push(`Classes to attend: ceil((${r2(r)} × ${t} − 100 × ${a}) ÷ (100 − ${r2(r)})) = ${need}`);
+ return{label:'Current attendance',value:f2(cur)+'%',msg:meets?`You are at or above the required ${r2(r)}%.`:need===null?"100% can't be regained once a class has been missed.":`You are below the required ${r2(r)}%.`,
+  lines:[`Classes you can still miss: ${miss}`,`Classes you must attend: ${need===null?'not possible':need+(need?' in a row, without missing any':'')}`],bd,copy:`Attendance ${f2(cur)}% (${a}/${t}); can miss ${miss} more classes for ${r2(r)}% – GradeCalc`}}
+};
+
+const CARDS=[['sgpa-calculator','🎓','SGPA Calculator','Add subjects, credits and grades to get your semester GPA.'],['cgpa-calculator','📈','CGPA Calculator','Combine semesters with a proper credit-weighted average.'],['target-cgpa','🎯','Target CGPA Calculator','Find the SGPA you need in the remaining semesters.'],['percentage-calculator','％','Percentage Calculator','Marks to percentage, required marks, and percentage to grade.'],['attendance-calculator','🗓️','Attendance Calculator','See how many classes you can miss or must attend.']];
+const pg=(h,sub,body)=>`<section class="page"><div class="hero"><h1>${h}</h1><p class="sub">${sub}</p></div>${body}</section>`;
+const R={
+'/':{t:'GradeCalc – GPA, SGPA & CGPA Calculator for Indian Students',d:'Free SGPA, CGPA, target CGPA, percentage and attendance calculators for Indian college students. Runs in your browser; nothing is sent to a server.',
+ h:`<section class="page"><div class="hero"><h1>Grade<span>Calc</span></h1><p class="lead">Calculate your GPA, SGPA &amp; CGPA instantly.</p><p class="sub">Simple academic calculators made for college students.</p></div>
+ <div class="grid">${CARDS.map(c=>`<article class="card"><span class="em" aria-hidden="true">${c[1]}</span><h2>${c[2]}</h2><p>${c[3]}</p><a class="btn" href="#/${c[0]}">Calculate</a></article>`).join('')}<article class="card"><span class="em" aria-hidden="true">🏛️</span><h2>University Calculators</h2><p>Gauhati University SGPA/CGPA with a configurable grading scale.</p><a class="btn s" href="#/universities">Explore</a></article></div>
+ <div class="sec"><h2>SGPA, CGPA and the difference</h2><div class="grid"><div class="card"><h3>What is SGPA?</h3><p>Semester Grade Point Average: the credit-weighted average of grade points in a single semester.</p><code class="formula">Σ(credit × grade point) ÷ Σ credits</code></div><div class="card"><h3>What is CGPA?</h3><p>Cumulative Grade Point Average: the credit-weighted average across all semesters completed so far.</p><code class="formula">Σ(SGPA × semester credits) ÷ Σ credits</code></div><div class="card"><h3>Difference</h3><p>SGPA measures one semester; CGPA measures your whole degree to date. If semesters carry different credits, CGPA is not the plain average of SGPAs.</p></div></div></div></section>`},
+'/sgpa-calculator':{t:'SGPA Calculator - Calculate Your Semester GPA',d:'Calculate your SGPA from subject credits and grades with an editable grading scale. Instant, private and free.',h:pg('SGPA Calculator','Add each subject with its credits and grade. Choose or edit the grading scale to match your university.','<div id="w"></div>'),i:r=>sgpaW($('#w',r),'generic',[{n:'Chemistry',c:'4',g:'A'},{n:'Zoology',c:'4',g:'A+'},{n:'Botany',c:'3',g:'B+'}])},
+'/cgpa-calculator':{t:'CGPA Calculator - Calculate Your College CGPA',d:'Calculate your CGPA from semester SGPAs and credits using the correct credit-weighted formula.',h:pg('CGPA Calculator','Enter each semester’s SGPA and total credits. CGPA is credit-weighted, not a simple average.','<div id="w"></div>'),i:r=>cgpaW($('#w',r))},
+'/target-cgpa':{t:'Target CGPA Calculator - SGPA Needed to Reach Your Goal',d:'Find the average SGPA you need over your remaining credits to reach a target CGPA.',h:pg('Target CGPA Calculator','Find the average SGPA you need in your remaining semesters.',`<div class="card" data-tool="tg">${EX}<div class="g2">${F('Current CGPA','cur','8.00')}${F('Credits already completed','done','66')}${F('Total credits required for the degree','tot','160')}${F('Target CGPA','tgt','8.50')}${F('Maximum grade point on your scale','mx','10')}</div>${CB}</div>`),i:r=>tools(r,T)},
+'/percentage-calculator':{t:'Percentage Calculator - Marks to Percentage & Grade',d:'Convert marks to percentage, find the marks needed for a target percentage, or map a percentage to a grade.',h:pg('Percentage Calculator','Three quick tools. Example values are pre-filled – replace them with your own.',
+ `<div class="card" data-tool="t1"><h2>Marks to percentage</h2><div class="g2">${F('Marks obtained','o','412')}${F('Total marks','t','500')}</div>${CB}</div>
+ <div class="card" data-tool="t2"><h2>Marks needed for a percentage</h2><div class="g2">${F('Total marks','t','600')}${F('Desired percentage','p','75')}</div>${CB}</div>
+ <div class="card" data-tool="t3"><h2>Percentage to grade</h2><div class="g2">${F('Your percentage','p','82.4')}<label>Grade bands (one per line: minimum % then grade)<textarea name="bands">90 O\n80 A+\n70 A\n60 B+\n50 B\n40 C\n0 F</textarea></label></div><p class="hint">These bands are only an example. Replace them with your university's official table.</p>${CB}</div>`),i:r=>tools(r,T)},
+'/attendance-calculator':{t:'Attendance Calculator - Calculate Required Attendance',d:'Check your attendance percentage and see how many classes you can miss or must attend to meet the required percentage.',h:pg('Attendance Calculator','See how many classes you can still miss, or must attend, to hit your required attendance.',`<div class="card" data-tool="at">${EX}<div class="g2">${F('Classes attended','a','42')}${F('Total classes conducted','t','50')}${F('Required attendance (%)','r','75')}</div>${CB}</div>`),i:r=>tools(r,T)},
+'/universities':{t:'Indian University GPA Calculators',d:'University-specific SGPA and CGPA calculators for Indian universities, starting with Gauhati University.',h:pg('Indian University GPA Calculators','Open a university to use its calculator. Grading scales are configurable so they can follow the official rules.',
+ UNIS.map(u=>`<details class="card uni" open><summary>${u.name}</summary><p class="sub">${u.desc}</p><a class="btn" href="#/universities/${u.slug}">Open ${u.short} calculator</a></details>`).join('')+`<details class="card uni"><summary>Any other university</summary><p class="sub">Every university grades differently. Use the SGPA calculator and edit the grading scale to match your official table.</p><a class="btn s" href="#/sgpa-calculator">Open SGPA calculator</a></details>`)},
+'/privacy':{t:'Privacy – GradeCalc',d:'GradeCalc runs in your browser and never sends your inputs to a server.',h:pg('Privacy','',`<div class="card"><p>All calculations run locally in your browser. Nothing you enter is sent to a server, stored or shared. The only thing saved on your device is your light or dark theme choice.</p></div>`)},
+'/about':{t:'About – GradeCalc',d:'About GradeCalc, simple academic calculators for college students in India.',h:pg('About GradeCalc','',`<div class="card"><p>GradeCalc is a set of simple, fast academic calculators for college students in India. Every formula is shown in the calculation breakdown so you can check the working yourself.</p><p>University grading systems differ, so grading scales here are editable. Always verify official academic regulations.</p></div>`)}
+};
+UNIS.forEach(u=>R['/universities/'+u.slug]={t:u.title,d:u.desc,h:pg(u.title,u.note,'<div id="w"></div><p class="hint">Need your overall CGPA? <a href="#/cgpa-calculator">Use the CGPA calculator</a>.</p>'),i:r=>sgpaW($('#w',r),u.key,[{n:'',c:'4',g:''},{n:'',c:'4',g:''},{n:'',c:'3',g:''}])});
+
+function render(keep){
+ const p=location.hash.replace(/^#/,'')||'/',r=R[p]||R['/'];
+ document.title=r.t;$('meta[name=description]').content=r.d;
+ $('#main').innerHTML=`<div class="wrap">${r.h}</div>`;r.i&&r.i($('#main'));
+ $$('nav a').forEach(a=>a.getAttribute('href')==='#'+p?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current'));
+ $('nav').classList.remove('open');$('#menu').setAttribute('aria-expanded','false');keep===1||scrollTo(0,0)}
+addEventListener('hashchange',()=>render());
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove('show'),1800)}
+function copy(t){const done=()=>toast('Result copied');
+ const fb=()=>{const a=document.createElement('textarea');a.value=t;document.body.append(a);a.select();try{document.execCommand('copy');done()}catch(e){toast('Copy failed – select the result and copy manually')}a.remove()};
+ navigator.clipboard&&isSecureContext?navigator.clipboard.writeText(t).then(done,fb):fb()}
+document.addEventListener('click',e=>{const c=e.target.closest('[data-copy]');if(c)return copy(c.dataset.copy);if(e.target.closest('[data-reset]'))render(1);if(e.target.closest('nav a'))$('nav').classList.remove('open')});
+$('#menu').onclick=()=>{const o=$('nav').classList.toggle('open');$('#menu').setAttribute('aria-expanded',o)};
+function setTheme(t){document.documentElement.dataset.theme=t;$('#theme').textContent=t==='dark'?'☀️':'🌙';$('#theme').setAttribute('aria-label',t==='dark'?'Switch to light mode':'Switch to dark mode')}
+let t0;try{t0=localStorage.getItem('gc-theme')}catch(e){}
+setTheme(t0||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));
+$('#theme').onclick=()=>{const t=document.documentElement.dataset.theme==='dark'?'light':'dark';setTheme(t);try{localStorage.setItem('gc-theme',t)}catch(e){}};
+render();
+</script>
+</body>
+</html>
